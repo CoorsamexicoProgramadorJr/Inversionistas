@@ -14,6 +14,8 @@ import Docs from '@/Components/Docs.vue';
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-2 md:px-4">
                     <div class="max-w-full bg-white overflow-hidden shadow-xl sm:rounded-lg p-2 md:flex md:justify-between md:items-center">
+
+                        <!-- Calendario -->
                         <div class="md:w-2/12 h-2/6 bg-gray-100 border-gray-100 max-w-7xl shadow-md">
                         </div>
                         <div class="md:w-10/12 h-4/6 flex flex-col justify-between items-center">
