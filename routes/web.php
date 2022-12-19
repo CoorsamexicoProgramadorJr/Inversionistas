@@ -23,17 +23,14 @@ Route::get('/', function () {
     ]);
 });
 
+//Dashboad
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [DocController::class,'index'])->name('dashboard');
+    Route::post('/dashboard', [DocController::class, 'store']);
+    Route::get('/arch', [ArchController::class, 'index'])->name('archivos');
 });
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/arch', [ArchController::class,'index'])->name('archivos');
-});
+

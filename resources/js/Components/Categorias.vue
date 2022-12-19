@@ -14,28 +14,29 @@ export default{
     },
     components: { ThirdButton }
 }
+
 </script>
 
 <template>
 
     <!-- Menu caategorias Tablet-Desktop -->
     <div class="hidden md:grid md:grid-cols-6 w-full md:gap-2 items-center">
-        <ThirdButton >
+        <ThirdButton v-for="cat in cateogries" class="h-full" >
+            {{ cat.nombre }}
+        </ThirdButton>
+        <ThirdButton class="h-full">
+            Camiones de Patio Guadalajara
+        </ThirdButton>
+        <ThirdButton class="h-full">
             Cat 1
         </ThirdButton>
-        <ThirdButton >
+        <ThirdButton class="h-full">
             Cat 1
         </ThirdButton>
-        <ThirdButton >
+        <ThirdButton class="h-full">
             Cat 1
         </ThirdButton>
-        <ThirdButton >
-            Cat 1
-        </ThirdButton>
-        <ThirdButton >
-            Cat 1
-        </ThirdButton>
-        <ThirdButton >
+        <ThirdButton class="h-full">
             Cat 1
         </ThirdButton>
     </div>
