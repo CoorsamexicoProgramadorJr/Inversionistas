@@ -22,8 +22,6 @@ const submit = () =>{
         onSuccess:() => form.reset('category'),
     });
 };
-
-
 </script>
 
 <template>

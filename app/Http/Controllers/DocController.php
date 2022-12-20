@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\DB;
 class DocController extends Controller
 {
     public function Index() {
-        $cats = DB::table('categories')->get();
-        return Inertia::render('Dashboard', ['cateogries' => $cats]);
+        $cats = DB::table('categories')->pluck('nombre');
+        return Inertia::render('Dashboard', ['categories' => $cats]);
     }
 
     public function store(Request $request){
