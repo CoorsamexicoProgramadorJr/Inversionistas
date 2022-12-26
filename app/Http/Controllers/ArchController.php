@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
@@ -13,45 +14,46 @@ use Illuminate\Support\Facades\Storage;
 
 class ArchController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $cats = Category::all();
         $docs = Document::all();
-        return Inertia::render('Archivos',['categories' => $cats,'documents' => $docs]);
+        $users = User::all();
+        return Inertia::render('Archivos', ['categories' => $cats, 'documents' => $docs, 'usuario' => $users]);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         $path = Storage::disk('files')->put('/', request()->file('path'));
         Document::create([
-            'nombre' =>$request->nombre,
+            'nombre' => $request->nombre,
             'path' => $path,
-            'category_id' =>$request->category,
+            'category_id' => $request->category,
             'user_id' => auth()->user()->id,
         ]);
 
-        !$this->index();
+        return redirect(route('archivos.index'));
     }
 
-    public function download(){
-        foreach ($_GET as $value => $key) {
-            $path = $value;
-        }
-        $path = Document::find($path);
-        $url =  Storage::disk('files')->download($path->path);
+    public function download(Request $request)
+    {
+        $url =  Storage::disk('files')->download($request->path);
+        dd($url);
         return $url;
     }
-    
-    public function find(){
-        foreach ($_GET as $value => $key) {
-            $path = $value;
-        }
-        $path = Document::find($path);
+
+    public function find(Request $request)
+    {
     }
 
-    public function destroy(Request $request){
-        dd($request);
+    public function destroy(Request $request)
+    {
+        Document::destroy($request->id);
+        return redirect(route('archivos.index'));
     }
 
-    protected function updateFile(UploadedFile $file){
+    protected function updateFile(UploadedFile $file)
+    {
         $path = Storage::put('files', request()->file('path'));
         return $path;
     }

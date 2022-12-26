@@ -29,14 +29,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/dashboard', [DashboardController::class, 'store']);
 
     Route::get('/arch', [ArchController::class, 'index'])->name('archivos.index');
     Route::post('/arch', [ArchController::class, 'create']);
     Route::post('/arch/update', [ArchController::class, 'update'])->name('archivos.update');
-    Route::get('/arch/download', [ArchController::class, 'download'])->name('archivos.download');
+    Route::post('/arch/download', [ArchController::class, 'download'])->name('archivos.download');
     Route::get('/arch/find', [ArchController::class, 'find'])->name('archivos.find');
-    Route::post('/arch/delete',[ArchController::class,'destroy'])->name('archivos.delete');
+    Route::post('/arch/delete', [ArchController::class, 'destroy'])->name('archivos.delete');
 });
-

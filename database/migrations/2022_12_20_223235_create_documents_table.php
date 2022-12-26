@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('path');
-            $table->foreignId('user_id')->index();
-            $table->foreignId('category_id')->index();
+            $table->foreignId('user_id')->index()->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->index()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function Index() {
+    public function Index()
+    {
         $cats = DB::table('categories')->get();
         $docs = Document::all();
         return Inertia::render('Dashboard', ['categories' => $cats, 'documents' => $docs]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         Category::create([
             'nombre' => $request->category
         ]);
-        !$this->Index();
+        return redirect(route('Dashboard'));
     }
 }
