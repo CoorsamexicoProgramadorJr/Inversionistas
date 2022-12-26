@@ -14,6 +14,6 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
         <slot name="contenido"/>
     </main>
     <footer class="mt-10 text-center p-5 text-gray-500 font-bold uppercase">
-        Coorsa Mexico - Todos los derechos Reservados
+        Coorsa Mexico - Todos los derechos Reservados {{ Date.now()}}
     </footer>
 </template>

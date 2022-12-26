@@ -1,6 +1,14 @@
-<script>
+<script setup>
+/* import { ref } from 'vue';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
+const date = ref({
+    month: new Date().getMonth(),
+    year: new Date().getFullYear()
+}); */
 </script>
 
 <template>
-    <h2>Hola</h2>
+    <!-- <Datepicker v-model="month" month-picker /> -->
 </template>
