@@ -1,23 +1,30 @@
 <script setup>
+//App layout
+import AppLayout from "../Layouts/AppLayout.vue";
 import { ref } from "vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
-import AppLayout from "@/Layouts/AppLayout.vue";
 import DangerButton from "../Components/DangerButton.vue";
 import DialogModal from "../Components/DialogModal.vue";
 import ThirdButton from "./../Components/ThirdButton.vue";
 import InputLabel from "../Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 
-defineProps(["categories", "documents", "datos", "usuario"]);
+defineProps(["usuarios", "rols"]);
+const datos = Object;
 const modal = ref(false);
 const del = ref(false);
-const datos = Object;
 
-//Formularios
+const closeModal = () => {
+    modal.value = false;
+    del.value = false;
+    form.reset();
+};
+
 const form = useForm({
-    nombre: "",
-    path: "",
-    category: "",
+    name: "",
+    email: "",
+    rol: "",
+    password: "",
 });
 const dform = useForm({
     id: "",
@@ -27,26 +34,20 @@ const dform = useForm({
 const submit = () => {
     form.transform((data) => ({
         ...data,
-    })).post(route("archivos.index"), {
+    })).post(route("usuarios.create"), {
         onSuccess: () => closeModal(),
         onCancel: () => form.reset(),
     });
 };
-
-//Cierra el modal
-const closeModal = () => {
-    modal.value = false;
-    del.value = false;
-    form.reset();
-};
 </script>
+
 <template>
-    <AppLayout title="Archivos">
+    <AppLayout title="Usuarios">
         <template #header>
-            <h1 class="text-xl font-bold">Archivos</h1>
+            <h1 class="text-xl font-bold">Usuarios</h1>
         </template>
+
         <template #>
-            <!-- Modal de subida de documentos -->
             <DialogModal :show="modal" :max-width="lg" @close="closeModal">
                 <template #title>
                     <div class="flex justify-end w-full pt-2 pr-2">
@@ -70,7 +71,7 @@ const closeModal = () => {
                         </button>
                     </div>
                     <h1 class="font-semibold text-center">
-                        Subir un nuevo Archivo
+                        Crear Nuevo Usuario
                     </h1>
                 </template>
                 <template #content>
@@ -82,7 +83,7 @@ const closeModal = () => {
                             <div>
                                 <InputLabel
                                     for="name"
-                                    value="Nombre del Documento"
+                                    value="Nombre del Usuario"
                                     class="text-md font-semibold"
                                 />
                                 <TextInput
@@ -91,43 +92,60 @@ const closeModal = () => {
                                     class="mt-1 block w-full"
                                     required
                                     autofocus
-                                    v-model="form.nombre"
+                                    v-model="form.name"
                                 />
                             </div>
                             <div>
                                 <InputLabel
-                                    for="categoria"
-                                    value="Seleccione una categoria"
+                                    for="rol"
+                                    value="Seleccione un Rol"
                                     class="text-md font-semibold"
                                 />
                                 <select
-                                    id="categoria"
-                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full mt-1 block"
+                                    id="rol"
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full mt-1 block capitalize"
                                     required
-                                    v-model="form.category"
+                                    v-model="form.rol"
                                 >
                                     <option value="" disabled selected>
                                         Selecione
                                     </option>
-                                    <template v-for="cats in categories">
-                                        <option :value="cats.id">
-                                            {{ cats.nombre }}
+                                    <template v-for="rol in rols">
+                                        <option
+                                            class="capitalize"
+                                            :value="rol.id"
+                                        >
+                                            {{ rol.name }}
                                         </option>
                                     </template>
                                 </select>
                             </div>
-                            <div class="col-span-2">
+                            <div>
                                 <InputLabel
-                                    for="arch"
-                                    value="Seleccione una archivo"
+                                    for="mail"
+                                    value="E-Mial"
                                     class="text-md font-semibold"
                                 />
                                 <TextInput
-                                    id="arch"
-                                    type="file"
+                                    id="pass"
+                                    type="email"
+                                    class="mt-1 block w-full"
+                                    v-model="form.email"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <InputLabel
+                                    for="pass"
+                                    value="Contraseña"
+                                    class="text-md font-semibold"
+                                />
+                                <TextInput
+                                    id="pass"
+                                    type="password"
                                     class="mt-1 block w-full"
                                     required
-                                    @input="form.path = $event.target.files[0]"
+                                    v-model="form.password"
                                 />
                             </div>
                             <ThirdButton
@@ -136,7 +154,7 @@ const closeModal = () => {
                                 :class="{ 'opacity-25': form.processing }"
                                 :disabled="form.processing"
                             >
-                                Subir Documento
+                                Crear nuevo usuario
                             </ThirdButton>
                         </form>
                     </div>
@@ -146,15 +164,15 @@ const closeModal = () => {
 
             <div class="max-w-7xl mx-auto sm:px-2 md:px-4">
                 <div
-                    class="max-w-full bg-white overflow-hidden shadow-xl sm:rounded-lg p-2 md:grid md:justify-center md:items-center"
+                    class="max-w-full bg-white overflow-hidden shadow-xl sm:rounded-lg p-2 md:grid"
                 >
-                    <div class="flex flex-col w-full gap-2 justify-end mb-2">
+                    <div class="grid max-w-full gap-2 p-1 mb-2">
                         <div class="flex justify-end">
                             <ThirdButton
                                 class="max-w-fit"
                                 @click="modal = true"
                             >
-                                Agregar Archivo
+                                Agregar Usuario
                             </ThirdButton>
                         </div>
                         <div class="flex justify-between items-center">
@@ -171,54 +189,31 @@ const closeModal = () => {
                             </form>
                         </div>
                     </div>
-                    <div>
-                        <table>
+                    <div class="max-w-full sm:rounded-lg p-2 md:grid">
+                        <table class="max-w-full">
                             <thead
-                                class="grid text-sm text-center justify-center shadow-md border-b-2 border-gray-400 grid-cols-5 px-3 py-1 gap-2 items-center"
+                                class="grid text-sm text-center justify-center shadow-md border-b-2 border-gray-400 grid-cols-4 px-3 py-1 gap-2 items-center"
                             >
                                 <th>ID</th>
-                                <th>Nombre de Archivo</th>
-                                <th>Categoria</th>
-                                <th>Autor</th>
+                                <th>Nombre</th>
+                                <th>e-Mail</th>
                                 <th>Acciones</th>
                             </thead>
                             <tbody
-                                class="grid grid-cols-5 w-full justify-center text-center mx-2 py-1 gap-2 items-center"
+                                class="grid grid-cols-4 w-full justify-center text-center mx-2 py-1 gap-2 items-center"
                             >
-                                <template v-for="doc in documents">
-                                    <td class="px-1">{{ doc.id }}</td>
-                                    <td class="px-1">{{ doc.nombre }}</td>
-                                    <template v-for="cats in categories">
-                                        <td
-                                            v-if="cats.id === doc.category_id"
-                                            class="px-1"
-                                        >
-                                            {{ cats.nombre }}
-                                        </td>
-                                    </template>
-                                    <template v-for="user in usuario">
-                                        <td
-                                            v-if="user.id === doc.user_id"
-                                            class="px-1"
-                                        >
-                                            {{ user.name }}
-                                        </td>
-                                    </template>
+                                <template v-for="user in usuarios">
+                                    <td class="px-1">{{ user.id }}</td>
+                                    <td class="px-1">{{ user.name }}</td>
+                                    <td class="px-1">
+                                        {{ user.email }}
+                                    </td>
                                     <td class="px-1 grid w-full gap-2">
-                                        <Link
-                                            :href="route('archivos.download')"
-                                            method="Post"
-                                            :data="{ path: doc.path }"
-                                        >
-                                            <ThirdButton :type="'submit'"
-                                                >Descargar Archivo</ThirdButton
-                                            >
-                                        </Link>
                                         <ThirdButton
                                             :type="'button'"
                                             @click="
                                                 modal = !modal;
-                                                datos = doc;
+                                                datos = user;
                                             "
                                         >
                                             Editar
@@ -264,22 +259,25 @@ const closeModal = () => {
                                                         class="text-center font-semibold text-lg text-gray-500"
                                                     >
                                                         Estas seguro que deseas
-                                                        eliminar el archivo
+                                                        eliminar al usuario
                                                         <span
                                                             class="font-bold"
                                                             >{{
-                                                                datos.nombre
+                                                                datos.name
                                                             }}</span
                                                         >
-                                                        despues de esto no
-                                                        podras recuperarlo
+                                                        si lo haces todos los
+                                                        documentos que esten
+                                                        asociados a el seran
+                                                        elimiandos y no podras
+                                                        recuperarlos
                                                     </p>
                                                 </template>
                                                 <template #footer>
                                                     <Link
                                                         :href="
                                                             route(
-                                                                'archivos.delete'
+                                                                'usuarios.delete'
                                                             )
                                                         "
                                                         method="POST"
@@ -292,7 +290,7 @@ const closeModal = () => {
                                                                 closeModal()
                                                             "
                                                         >
-                                                            Eliminar archivo
+                                                            Eliminar usuario
                                                         </DangerButton>
                                                     </Link>
                                                 </template>
@@ -302,7 +300,7 @@ const closeModal = () => {
                                                 :type="'buton'"
                                                 @click="
                                                     del = !del;
-                                                    datos = doc;
+                                                    datos = user;
                                                 "
                                             >
                                                 Delete
