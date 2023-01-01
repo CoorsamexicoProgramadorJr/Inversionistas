@@ -24,11 +24,17 @@ class ArchController extends Controller
 
     public function create(Request $request)
     {
+        $validate = $request->validate([
+            'name' => ['required', 'max:255'],
+            'path' => ['required', 'mimes:pdf,doc,docx,xsl,xslx,ppt,pptx'],
+            'category' => ['required'],
+        ]);
+
         $path = Storage::disk('files')->put('/', request()->file('path'));
         Document::create([
-            'nombre' => $request->nombre,
+            'name' => $validate['name'],
             'path' => $path,
-            'category_id' => $request->category,
+            'category_id' => $validate['category'],
             'user_id' => auth()->user()->id,
         ]);
 

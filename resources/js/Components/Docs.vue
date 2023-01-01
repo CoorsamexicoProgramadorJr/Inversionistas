@@ -1,5 +1,6 @@
 <script setup>
 import ThirdButton from "./ThirdButton.vue";
+import { Link } from "@inertiajs/inertia-vue3";
 defineProps({
     documents: Array,
 });
@@ -8,7 +9,7 @@ defineProps({
 <template>
     <template v-for="docs in documents">
         <div
-            class="grid items-center justify-center border-gray-300 gap-1 p-2 border"
+            class="grid items-center h-full w-full justify-center border-gray-300 gap-1 p-2 border"
         >
             <div class="flex flex-col items-center">
                 <svg
@@ -33,7 +34,15 @@ defineProps({
                     <line x1="9" y1="17" x2="15" y2="17" />
                 </svg>
             </div>
-            <ThirdButton>{{ docs.nombre }}</ThirdButton>
+            <Link
+                :href="route('archivos.download')"
+                method="Post"
+                :data="{ path: docs.path }"
+            >
+                <ThirdButton class="w-full" :type="'submit'">{{
+                    docs.name
+                }}</ThirdButton>
+            </Link>
         </div>
     </template>
 </template>

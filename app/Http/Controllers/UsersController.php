@@ -20,11 +20,17 @@ class UsersController extends Controller
 
     public function create(Request $request)
     {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+        $validate = $request->validate([
+            'name' => ['required', 'max:255', 'unique:users', 'string'],
+            'email' => ['required', 'max:255', 'email', 'unique:users'],
+            'password' => ['required', 'min:8', 'max:255'],
+            'rol' => ['required'],
         ]);
+        User::create([
+            'name' => $validate['name'],
+            'email' => $validate['email'],
+            'password' => Hash::make($validate['password']),
+        ])->assignRole($validate['rol']);
         return redirect(route('usuarios.index'));
     }
 

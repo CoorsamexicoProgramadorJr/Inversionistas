@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ArchController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
+use App\Models\Category;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -37,9 +39,7 @@ Route::middleware([
     //Rutas de la pagina Archivos
     Route::get('/arch', [ArchController::class, 'index'])->name('archivos.index');
     Route::post('/arch', [ArchController::class, 'create']);
-    Route::post('/arch/update', [ArchController::class, 'update'])->name('archivos.update');
     Route::post('/arch/download', [ArchController::class, 'download'])->name('archivos.download');
-    Route::get('/arch/find', [ArchController::class, 'find'])->name('archivos.find');
     Route::post('/arch/delete', [ArchController::class, 'destroy'])->name('archivos.delete');
 
     //Rutas de la Pagina Usuarios
@@ -48,6 +48,13 @@ Route::middleware([
     Route::post('/users/delete', [UsersController::class, 'destroy'])->name('usuarios.delete');
 
     //Rutas de la pagina Roles
-
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
+    Route::post('/roles', [RolesController::class, 'show']);
+    Route::post('/roles/destroy', [RolesController::class, 'destroy'])->name('roles.destroy');
+    Route::post('/roles/create', [RolesController::class, 'create'])->name('roles.create');
+
+    //Rutas de la pagina categorys
+    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+    Route::post('/category/create', [CategoryController::class, 'store'])->name('category.create');
+    Route::post('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
 });

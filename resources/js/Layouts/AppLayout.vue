@@ -67,6 +67,12 @@ const logout = () => {
                                 >
                                     Roles
                                 </NavLink>
+                                <NavLink
+                                    :href="route('category.index')"
+                                    :active="route().current('category.index')"
+                                >
+                                    Categorias
+                                </NavLink>
                             </div>
                         </div>
 
@@ -230,6 +236,12 @@ const logout = () => {
                             :active="route().current('roles.index')"
                         >
                             Roles
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('category.index')"
+                            :active="route().current('category.index')"
+                        >
+                            Categorias
                         </ResponsiveNavLink>
                     </div>
 
