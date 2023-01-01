@@ -71,9 +71,10 @@ const closeModal = () => {
                                     >Busqueda</label
                                 >
                                 <input
-                                    type="text"
+                                    type="search"
                                     id="search"
                                     class="max-h-min text-xs"
+                                    aria-controls="tabla"
                                 />
                             </form>
                         </div>

@@ -56,5 +56,6 @@ Route::middleware([
     //Rutas de la pagina categorys
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::post('/category/create', [CategoryController::class, 'store'])->name('category.create');
+    Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::post('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
 });

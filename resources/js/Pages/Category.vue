@@ -26,13 +26,17 @@ const closeModal = () => {
     form.reset();
 };
 const form = useForm({
+    id: "",
     name: "",
 });
 const submit = () => {
     form.transform((data) => ({
         ...data,
     })).post(route("category.create"), {
-        onSuccess: () => closeModal(),
+        onSuccess: () => {
+            closeModal();
+            form.errors = [];
+        },
         onCancel: () => form.reset(),
     });
 };
@@ -52,7 +56,7 @@ const submit = () => {
                             Agregar Categoria
                         </PrimaryButton>
                     </div>
-                    <Table>
+                    <Table :over="'y'">
                         <template #cols>
                             <Thead>id</Thead>
                             <Thead>Nombre</Thead>
@@ -69,6 +73,7 @@ const submit = () => {
                                             crea = !crea;
                                             datos = c;
                                             form.name = c.name;
+                                            form.id = c.id;
                                         "
                                     >
                                         Editar
@@ -118,6 +123,14 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
                 <div>
+                    <TextInput
+                        id="name"
+                        type="hidden"
+                        class="mt-1 block w-full"
+                        required
+                        autofocus
+                        v-model="form.id"
+                    />
                     <ThirdButton
                         class="w-full"
                         :class="{ 'opacity-25': form.processing }"
