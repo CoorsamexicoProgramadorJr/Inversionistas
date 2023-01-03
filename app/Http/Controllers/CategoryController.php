@@ -16,14 +16,18 @@ class CategoryController extends Controller
     }
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255',]
-        ]);
         $categ = Category::where('id', $request->id)->first();
-        if ($categ)
+        if ($categ) {
+            $validated = $request->validate([
+                'name' => ['required', 'max:255',]
+            ]);
             $this->update($validated, $categ);
-        else
+        } else {
+            $validated = $request->validate([
+                'name' => ['required', 'max:255', 'unique:categories']
+            ]);
             $this->create($validated);
+        }
     }
     public function destroy(Request $request)
     {

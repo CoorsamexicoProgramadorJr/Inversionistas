@@ -20,6 +20,7 @@ const datos = Object;
 
 //Formularios
 const form = useForm({
+    id: "",
     name: "",
     path: "",
     category: "",
@@ -43,6 +44,7 @@ const closeModal = () => {
     modal.value = false;
     del.value = false;
     form.reset();
+    form.errors = [];
 };
 </script>
 <template>
@@ -80,7 +82,7 @@ const closeModal = () => {
                         </div>
                     </div>
 
-                    <Tabla>
+                    <Tabla :over="'y'">
                         <template #cols>
                             <Thead>ID</Thead>
                             <Thead>Nombre de Archivo</Thead>
@@ -107,9 +109,9 @@ const closeModal = () => {
                                 </template>
                                 <Tbody class="grid w-full gap-2">
                                     <Link
-                                        :href="route('archivos.download')"
-                                        method="Post"
-                                        :data="{ path: doc.path }"
+                                        :href="
+                                            route('archivos.download', doc.path)
+                                        "
                                     >
                                         <ThirdButton
                                             class="w-full"
@@ -125,6 +127,7 @@ const closeModal = () => {
                                             form.name = doc.name;
                                             form.path = doc.path;
                                             form.category = doc.category_id;
+                                            form.id = doc.id;
                                         "
                                     >
                                         Editar
@@ -238,14 +241,30 @@ const closeModal = () => {
                         />
                         <InputError class="mt-2" :message="form.errors.path" />
                     </div>
-                    <ThirdButton
-                        class="col-start-2"
-                        :type="'submit'"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                    >
-                        Subir Documento
-                    </ThirdButton>
+                    <div class="col-start-2">
+                        <TextInput
+                            id="arch"
+                            type="hidden"
+                            class="mt-1 block w-full"
+                            required
+                            @input="form.path = $event.target.files[0]"
+                        />
+                        <TextInput
+                            id="arch"
+                            type="hidden"
+                            class="mt-1 block w-full"
+                            required
+                            v-model="form.id"
+                        />
+                        <ThirdButton
+                            class="w-full"
+                            :type="'submit'"
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                        >
+                            Subir Documento
+                        </ThirdButton>
+                    </div>
                 </form>
             </div>
         </template>

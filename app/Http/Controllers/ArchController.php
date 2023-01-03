@@ -6,10 +6,9 @@ use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Document;
 use App\Models\User;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class ArchController extends Controller
@@ -22,45 +21,54 @@ class ArchController extends Controller
         return Inertia::render('Archivos', ['categories' => $cats, 'documents' => $docs, 'usuario' => $users]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $validate = $request->validate([
             'name' => ['required', 'max:255'],
             'path' => ['required', 'mimes:pdf,doc,docx,xsl,xslx,ppt,pptx'],
             'category' => ['required'],
         ]);
-
+        $doc = Document::where('id', $request->id)->first();
         $path = Storage::disk('files')->put('/', request()->file('path'));
+        if ($doc) {
+            $this->update($validate, $doc, $path);
+        } else {
+            $this->create($validate, $path);
+        }
+
+        return redirect(route('archivos.index'));
+    }
+    public function create($val, $path)
+    {
         Document::create([
-            'name' => $validate['name'],
+            'name' => $val['name'],
             'path' => $path,
-            'category_id' => $validate['category'],
+            'category_id' => $val['category'],
             'user_id' => auth()->user()->id,
         ]);
+    }
 
+    protected function update($val, $doc, $path)
+    {
+        Storage::disk('files')->delete($doc->path);
+        $doc->update([
+            'name' => $val['name'],
+            'path' => $path,
+            'category_id' => $val['category'],
+            'user_id' => auth()->user()->id,
+        ]);
+    }
+
+    public function destroy(Request $request)
+    {
+        $doc = Document::where('id', $request->id)->first();
+        Storage::disk('files')->delete($doc->path);
+        Document::destroy($request->id);
         return redirect(route('archivos.index'));
     }
 
     public function download(Request $request)
     {
-        $url =  Storage::disk('files')->download($request->path);
-        dd($url);
-        return $url;
-    }
-
-    public function find(Request $request)
-    {
-    }
-
-    public function destroy(Request $request)
-    {
-        Document::destroy($request->id);
-        return redirect(route('archivos.index'));
-    }
-
-    protected function updateFile(UploadedFile $file)
-    {
-        $path = Storage::put('files', request()->file('path'));
-        return $path;
+        return Response()->download(public_path('files/' . $request->path));
     }
 }

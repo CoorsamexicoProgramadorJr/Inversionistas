@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rol;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -18,6 +17,17 @@ class UsersController extends Controller
         return Inertia::render('Usuarios', ['usuarios' => $users, 'rols' => $rols]);
     }
 
+    public function store(Request $request)
+    {
+        $user = User::where('id', $request->id)->first();
+        if ($user) {
+            $this->update($request, $user);
+        } else {
+            $this->create($request);
+        }
+        return redirect(route('usuarios.index'));
+    }
+
     public function create(Request $request)
     {
         $validate = $request->validate([
@@ -31,7 +41,21 @@ class UsersController extends Controller
             'email' => $validate['email'],
             'password' => Hash::make($validate['password']),
         ])->assignRole($validate['rol']);
-        return redirect(route('usuarios.index'));
+    }
+
+    public function update(Request $request, $user)
+    {
+        $validate = $request->validate([
+            'name' => ['required', 'max:255', 'string'],
+            'email' => ['required', 'max:255', 'email',],
+            'password' => ['required', 'min:8', 'max:255'],
+            'rol' => ['required'],
+        ]);
+        $user->update([
+            'name' => $validate['name'],
+            'email' => $validate['email'],
+            'password' => Hash::make($validate['password']),
+        ])->assignRole($validate['rol']);
     }
 
     public function destroy(Request $request)

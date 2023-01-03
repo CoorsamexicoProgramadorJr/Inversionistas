@@ -33,8 +33,10 @@ const closeModal = () => {
     modal.value = false;
     del.value = false;
     form.reset();
+    form.errors = [];
 };
 const form = useForm({
+    id: "",
     name: "",
 });
 const submit = () => {
@@ -96,6 +98,7 @@ const submit = () => {
                                             @click="
                                                 modal = !modal;
                                                 form.name = r.name;
+                                                form.id = r.id;
                                             "
                                         >
                                             Editar
@@ -135,10 +138,6 @@ const submit = () => {
                                     class="text-xs"
                                     type="text"
                                 />
-                                <InputError
-                                    class="mt-2"
-                                    :message="form.errors.name"
-                                />
                             </div>
                         </div>
                         <Table class="table-auto" :over="'y'">
@@ -151,18 +150,21 @@ const submit = () => {
                                 <tr
                                     class="text-gray-700 hover:bg-gray-200 transition cursor-pointer even:bg-gray-100"
                                     v-for="p in permisos"
+                                    for="permiso"
                                 >
                                     <Tbody class="capitalize">{{ p.id }}</Tbody>
                                     <Tbody class="capitalize">{{
                                         p.name
                                     }}</Tbody>
                                     <Tbody class="text-center w-7">
-                                        <TextInput type="checkbox" />
+                                        <TextInput
+                                            type="checkbox"
+                                            id="permiso"
+                                        />
                                     </Tbody>
                                 </tr>
                             </template>
                         </Table>
-                        <InputError class="mt-2" :message="form.errors" />
                     </div>
                 </div>
             </div>
@@ -192,6 +194,7 @@ const submit = () => {
                         autofocus
                         v-model="form.name"
                     />
+                    <InputError class="mt-2" :message="form.errors.name" />
                 </div>
                 <div>
                     <Table class="table-auto" :over="'y'">
@@ -211,8 +214,17 @@ const submit = () => {
                             </tr>
                         </template>
                     </Table>
+                    <InputError class="mt-2" :message="form.errors.name" />
                 </div>
                 <div class="col-start-2">
+                    <TextInput
+                        id="name"
+                        type="hidden"
+                        class="mt-1 block w-full"
+                        required
+                        autofocus
+                        v-model="form.id"
+                    />
                     <ThirdButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"

@@ -23,9 +23,13 @@ const closeModal = () => {
     modal.value = false;
     del.value = false;
     form.reset();
+    form.errors = [];
 };
 
+const role = () => {};
+
 const form = useForm({
+    id: "",
     name: "",
     email: "",
     rol: "",
@@ -103,9 +107,10 @@ const submit = () => {
                                         :type="'button'"
                                         @click="
                                             modal = !modal;
-                                            form.datos = user;
+                                            datos = user;
                                             form.name = user.name;
                                             form.email = user.email;
+                                            form.id = user.id;
                                         "
                                     >
                                         Editar
@@ -236,14 +241,23 @@ const submit = () => {
                             :message="form.errors.password"
                         />
                     </div>
-                    <ThirdButton
-                        class="col-start-2"
-                        :type="'submit'"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                    >
-                        Crear nuevo usuario
-                    </ThirdButton>
+                    <div>
+                        <TextInput
+                            id="pass"
+                            type="hidden"
+                            class="mt-1 block w-full"
+                            required
+                            v-model="form.id"
+                        />
+                        <ThirdButton
+                            class="col-start-2"
+                            :type="'submit'"
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                        >
+                            Enviar
+                        </ThirdButton>
+                    </div>
                 </form>
             </div>
         </template>

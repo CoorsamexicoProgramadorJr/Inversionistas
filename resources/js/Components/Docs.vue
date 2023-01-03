@@ -34,11 +34,7 @@ defineProps({
                     <line x1="9" y1="17" x2="15" y2="17" />
                 </svg>
             </div>
-            <Link
-                :href="route('archivos.download')"
-                method="Post"
-                :data="{ path: docs.path }"
-            >
+            <Link :href="route('archivos.download', docs.path)">
                 <ThirdButton class="w-full" :type="'submit'">{{
                     docs.name
                 }}</ThirdButton>

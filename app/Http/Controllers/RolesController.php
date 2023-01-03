@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Exception;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -17,14 +16,36 @@ class RolesController extends Controller
         $rol = Role::all();
         return Inertia::render('Roles', ['permisos' => $perm, 'roles' => $rol]);
     }
-    public function show(Request $request)
+
+    public function store(Request $request)
     {
-        try {
-            $users = sizeof(User::Role($request->id)->get());
-        } catch (Exception $e) {
-            $users = '';
+        $role = Role::where('id', $request->id)->first();
+        if ($role) {
+            $validate = $request->validate([
+                'name' => ['required', 'string', 'max:255',]
+            ]);
+            $this->update($validate, $role);
+        } else {
+            $validate = $request->validate([
+                'name' => ['required', 'string', 'max:255', 'unique:roles']
+            ]);
+            $this->create($validate);
         }
-        return $users;
+        return redirect('roles.index');
+    }
+
+    public function create($val)
+    {
+        Role::create([
+            'name' => $val['name'],
+        ]);
+    }
+
+    public function update($val, $role)
+    {
+        $role->update([
+            'name' => $val['name'],
+        ]);
     }
 
     public function destroy(Request $request)
@@ -37,16 +58,6 @@ class RolesController extends Controller
         }
         dd($users);
         Role::destroy($request->id);
-        return redirect('roles.index');
-    }
-    public function create(Request $request)
-    {
-        $validate = $request->validate([
-            'name' => ['required', 'string', 'max:255']
-        ]);
-        Role::create([
-            'name' => $validate['name'],
-        ]);
         return redirect('roles.index');
     }
 }

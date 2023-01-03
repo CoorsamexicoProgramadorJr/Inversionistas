@@ -10,15 +10,15 @@ const props = defineProps({
 
 const OverFlow = computed(() => {
     return {
-        x: "overflow-x-auto",
-        y: "overflow-y-auto",
+        'x': "overflow-x-auto",
+        'y': "overflow-y-auto",
     }[props.over];
 });
 </script>
 
 <template>
     <div class="max-w-full overflow-hidden sm:rounded-lg">
-        <div class="w-full" :class="OverFlow">
+        <div class="w-full overflow-auto" :class="OverFlow">
             <table id="tabla" class="w-full table-auto whitespace-nowrap">
                 <thead>
                     <tr
