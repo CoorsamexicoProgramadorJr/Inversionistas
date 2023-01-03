@@ -58,7 +58,7 @@ const submit = () => {
         <template #>
             <div class="max-w-7xl mx-auto sm:px-2 md:px-4">
                 <div
-                    class="max-w-full max-h-screen bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-2 md:grid md:grid-cols-2 md:gap-2"
+                    class="max-w-full bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-2 md:grid md:grid-cols-2 md:gap-2"
                 >
                     <!-- Tabla Roles -->
                     <div>

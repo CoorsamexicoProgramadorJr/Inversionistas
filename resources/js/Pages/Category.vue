@@ -49,14 +49,14 @@ const submit = () => {
         <template #>
             <div class="max-w-7xl mx-auto sm:px-2 md:px-4">
                 <div
-                    class="max-w-full max-h-screen bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-2 md:grid"
+                    class="max-w-full bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-2 md:grid"
                 >
                     <div class="flex justify-end mb-2">
                         <PrimaryButton @click="crea = true">
                             Agregar Categoria
                         </PrimaryButton>
                     </div>
-                    <Table :over="'y'">
+                    <Table>
                         <template #cols>
                             <Thead>id</Thead>
                             <Thead>Nombre</Thead>

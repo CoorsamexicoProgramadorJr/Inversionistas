@@ -7,6 +7,13 @@
     <script src="https://unpkg.com/vue@latest"></script>
     <script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
     <link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css">
+    <script type="text/javascript">
+        window.Laravel = {
+            csrfToken: "{{ csrf_token() }}",
+            jsPermissions: {!! auth()->user()
+                ?->jsPermissions() !!}
+        }
+    </script>
 
     <title inertia>{{ config('Coorsa', 'Coorsa') }}</title>
     @routes

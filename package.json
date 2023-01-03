@@ -21,6 +21,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "@vuepic/vue-datepicker": "^3.6.3"
+        "@vuepic/vue-datepicker": "^3.6.3",
+        "laravel-permission-to-vuejs": "^3.0.1"
     }
 }

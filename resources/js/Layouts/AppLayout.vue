@@ -8,6 +8,7 @@ import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import LaravelPermissionToVueJS from "laravel-permission-to-vuejs";
 
 defineProps({
     title: String,
@@ -58,12 +59,14 @@ const logout = () => {
                                 <NavLink
                                     :href="route('usuarios.index')"
                                     :active="route().current('usuarios.index')"
+                                    v-if="is('Admin')"
                                 >
                                     Usuarios
                                 </NavLink>
                                 <NavLink
                                     :href="route('roles.index')"
                                     :active="route().current('roles.index')"
+                                    v-if="is('Admin')"
                                 >
                                     Roles
                                 </NavLink>
