@@ -59,14 +59,13 @@ const logout = () => {
                                 <NavLink
                                     :href="route('usuarios.index')"
                                     :active="route().current('usuarios.index')"
-                                    v-if="is('Admin')"
+                                    v-if="can('ver:usuarios')"
                                 >
                                     Usuarios
                                 </NavLink>
                                 <NavLink
                                     :href="route('roles.index')"
                                     :active="route().current('roles.index')"
-                                    v-if="is('Admin')"
                                 >
                                     Roles
                                 </NavLink>

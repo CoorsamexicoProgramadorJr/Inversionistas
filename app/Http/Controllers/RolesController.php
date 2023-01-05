@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Redirect;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -22,42 +25,50 @@ class RolesController extends Controller
         $role = Role::where('id', $request->id)->first();
         if ($role) {
             $validate = $request->validate([
-                'name' => ['required', 'string', 'max:255',]
+                'name' => [
+                    'required', 'string', 'max:255',
+                ]
             ]);
-            $this->update($validate, $role);
+            $this->update($validate, $role, $request->perm);
         } else {
             $validate = $request->validate([
                 'name' => ['required', 'string', 'max:255', 'unique:roles']
             ]);
-            $this->create($validate);
+            $this->create($validate, $request->perm);
         }
-        return redirect('roles.index');
+        return redirect(route('roles.index'));
     }
 
-    public function create($val)
+    public function create($val, $permisos)
     {
-        Role::create([
+        $role = Role::create([
             'name' => $val['name'],
+            'guard_name' => 'web',
         ]);
+        foreach ($permisos as $p)
+            $role->givePermissionTo($p);
     }
 
-    public function update($val, $role)
+    public function update($val, $role, $permisos)
     {
         $role->update([
             'name' => $val['name'],
         ]);
+        foreach ($permisos as $p)
+            $role->givePermissionTo($p);
     }
 
     public function destroy(Request $request)
     {
-        $users = $this->show($request);
+        $users = sizeof(User::role($request->id)->get());
         if ($users) {
+            dd($users);
             $perm = Permission::all();
             $rol = Role::all();
-            return redirect('roles.index');
+            return redirect(route('roles.index'));
         }
-        dd($users);
+        dd($request);
         Role::destroy($request->id);
-        return redirect('roles.index');
+        return redirect(route('roles.index'));
     }
 }

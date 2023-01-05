@@ -96,6 +96,7 @@ const submit = () => {
                             <tr
                                 class="text-gray-700 hover:bg-gray-200 transition even:bg-gray-100"
                                 v-for="user in usuarios"
+                                :key="user"
                             >
                                 <Tbody>{{ user.id }}</Tbody>
                                 <Tbody>{{ user.name }}</Tbody>
@@ -200,7 +201,7 @@ const submit = () => {
                             <option value="" disabled selected>
                                 Selecione
                             </option>
-                            <template v-for="rol in rols">
+                            <template v-for="rol in rols" :key="rol">
                                 <option class="capitalize" :value="rol.id">
                                     {{ rol.name }}
                                 </option>

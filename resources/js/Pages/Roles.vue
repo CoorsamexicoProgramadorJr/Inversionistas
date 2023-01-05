@@ -28,6 +28,7 @@ const props = defineProps({
 const datos = Object;
 const modal = ref(false);
 const del = ref(false);
+const permi = ref([]);
 
 const closeModal = () => {
     modal.value = false;
@@ -38,6 +39,7 @@ const closeModal = () => {
 const form = useForm({
     id: "",
     name: "",
+    perm: "",
 });
 const submit = () => {
     form.transform((data) => ({
@@ -206,18 +208,31 @@ const submit = () => {
                         </template>
                         <template #rows>
                             <tr
-                                class="text-gray-700 transition cursor-pointer hover:bg-gray-200 even:bg-gray-100"
+                                class="text-gray-700 transition hover:bg-gray-200 even:bg-gray-100"
                                 v-for="p in permisos"
                                 :key="p"
                             >
-                                <Tbody class="capitalize">{{ p.name }}</Tbody>
+                                <Tbody class="capitalize">
+                                    <label
+                                        :for="p.id"
+                                        class="hover:cursor-pointer"
+                                    >
+                                        {{ p.name }}
+                                    </label>
+                                </Tbody>
                                 <Tbody class="text-center w-7">
-                                    <TextInput type="checkbox" />
+                                    <input
+                                        type="checkbox"
+                                        :id="p.id"
+                                        class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                                        :value="p.id"
+                                        v-model="permi"
+                                    />
                                 </Tbody>
                             </tr>
                         </template>
                     </Table>
-                    <InputError class="mt-2" :message="form.errors.name" />
+                    <InputError class="mt-2" :message="form.errors.perm" />
                 </div>
                 <div class="col-start-2">
                     <TextInput
@@ -231,8 +246,9 @@ const submit = () => {
                     <ThirdButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
+                        @click="form.perm = permi"
                     >
-                        Crear nuevo Rol
+                        Enviar
                     </ThirdButton>
                 </div>
             </form>

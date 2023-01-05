@@ -46,13 +46,7 @@ Route::middleware([
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::post('/category/create', [CategoryController::class, 'store'])->name('category.create');
     Route::post('/category/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
-});
-Route::middleware([
-    'auth:sanctum',
-    'role:Admin',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
+
     //Rutas de la Pagina Usuarios
     Route::get('/users', [UsersController::class, 'index'])->name('usuarios.index');
     Route::post('/users/create', [UsersController::class, 'store'])->name('usuarios.create');
@@ -63,3 +57,10 @@ Route::middleware([
     Route::post('/roles/destroy', [RolesController::class, 'destroy'])->name('roles.destroy');
     Route::post('/roles/create', [RolesController::class, 'store'])->name('roles.create');
 });
+/* Route::middleware([
+    'auth:sanctum',
+    'role:Admin',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+}); */
