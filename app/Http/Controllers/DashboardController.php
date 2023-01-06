@@ -13,7 +13,9 @@ class DashboardController extends Controller
     public function Index()
     {
         $cats = DB::table('categories')->get();
-        $docs = Document::all();
+        $year = date('Y');
+        $month = date('m');
+        $docs = Document::whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
         return Inertia::render('Dashboard', ['categories' => $cats, 'documents' => $docs]);
     }
 

@@ -6,8 +6,6 @@ use App\Models\User;
 use Exception;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Redirect;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -62,12 +60,10 @@ class RolesController extends Controller
     {
         $users = sizeof(User::role($request->id)->get());
         if ($users) {
-            dd($users);
             $perm = Permission::all();
             $rol = Role::all();
             return redirect(route('roles.index'));
         }
-        dd($request);
         Role::destroy($request->id);
         return redirect(route('roles.index'));
     }
