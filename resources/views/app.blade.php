@@ -21,6 +21,14 @@
         }).mount("#app");
     </script>
 
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var pusher = new Pusher ("9a8eff39d2638e09942d",{
+            cluster: 'mt1'
+        });
+    </script>
+
     <title inertia>{{ config('Coorsa', 'Coorsa') }}</title>
     @routes
     @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
