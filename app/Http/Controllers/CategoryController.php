@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewTrade;
 use Inertia\Inertia;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Type\Integer;
 
 class CategoryController extends Controller
@@ -12,7 +14,8 @@ class CategoryController extends Controller
     public function index()
     {
         $cats = Category::all();
-        return Inertia::render('Category', ['cats' => $cats]);
+
+        return Inertia::render('Category', ['cats' => $cats, "userA" => Auth::user()]);
     }
     public function store(Request $request)
     {

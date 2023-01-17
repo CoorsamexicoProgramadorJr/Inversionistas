@@ -13,7 +13,7 @@ import DialogModal from "../Components/DialogModal.vue";
 import DangerButton from "../Components/DangerButton.vue";
 import InputError from "@/Components/InputError.vue";
 
-defineProps(["cats", "errors"]);
+const props = defineProps(["cats", "errors", "userA"]);
 const datos = Object;
 const del = ref(false);
 const crea = ref(false);
@@ -40,6 +40,13 @@ const submit = () => {
         onCancel: () => form.reset(),
     });
 };
+
+Echo.private(`App.Models.Category.${props.userA.id}`).listen(
+    "CategoryCreated",
+    (e) => {
+        console.log("e.category");
+    }
+);
 </script>
 <template>
     <AppLayout title="Categorias">
@@ -63,7 +70,7 @@ const submit = () => {
                             <Thead>acciones</Thead>
                         </template>
                         <template #rows>
-                            <tr v-for="c in cats">
+                            <tr v-for="c in cats" :key="c">
                                 <Tbody>{{ c.id }}</Tbody>
                                 <Tbody>{{ c.name }}</Tbody>
                                 <Tbody class="grid gap-1">
